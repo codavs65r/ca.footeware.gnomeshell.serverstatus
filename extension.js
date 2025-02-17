@@ -177,16 +177,16 @@ export default class ServerStatusIndicatorExtension extends Extension {
         if (panelIcon) {
             if (haveDown) {
                 panelIcon.icon_name = iconProvider.getIcon(Status.Down);
-                panelIcon.style_class = "system-status-icon indicator-icon "+iconProvider.getClass(Status.Down);
+                //panelIcon.style_class = "system-status-icon indicator-icon "+iconProvider.getClass(Status.Down);
             } else if (haveBad) {
                 panelIcon.icon_name = iconProvider.getIcon(Status.Bad);
-                panelIcon.style_class = "system-status-icon indicator-icon "+iconProvider.getClass(Status.Bad);
+                //panelIcon.style_class = "system-status-icon indicator-icon "+iconProvider.getClass(Status.Bad);
             } else if (haveUp) {
                 panelIcon.icon_name = iconProvider.getIcon(Status.Up);
-                panelIcon.style_class = "system-status-icon indicator-icon "+iconProvider.getClass(Status.Up);
+                //panelIcon.style_class = "system-status-icon indicator-icon "+iconProvider.getClass(Status.Up);
             } else {
                 panelIcon.icon_name = iconProvider.getIcon(Status.Init);
-                panelIcon.style_class = "system-status-icon indicator-icon "+iconProvider.getClass(Status.Init);
+                //panelIcon.style_class = "system-status-icon indicator-icon "+iconProvider.getClass(Status.Init);
             }
         }
     }
