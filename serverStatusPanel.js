@@ -53,6 +53,7 @@ export const ServerStatusPanel = GObject.registerClass(
             this.connect("activate", () => {
                 parent.indicator.menu.close();
                 this.openBrowser(serverSetting.url);
+                console.log("Open URL: "+serverSetting.url);
             });
 
             // call once then schedule
