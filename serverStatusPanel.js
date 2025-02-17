@@ -42,12 +42,19 @@ export const ServerStatusPanel = GObject.registerClass(
             let panelIconDisposed = false;
             this.panelIcon.connect("destroy", () => (panelIconDisposed = true));
             this.add_child(this.panelIcon);
-
+            
             // server name display, click to open browser
             const nameButton = new St.Button({
                 label: serverSetting.name,
                 y_align: Clutter.ActorAlign.CENTER,
             });
+
+            nameButton.connect("clicked", () => {
+                parent.indicator.menu.close();
+                this.openBrowser(serverSetting.url);
+                console.log("Open URL: "+serverSetting.url);
+            });
+
             this.add_child(nameButton);
 
             this.connect("activate", () => {
