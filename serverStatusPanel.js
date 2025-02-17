@@ -22,14 +22,13 @@ export const ServerStatusPanel = GObject.registerClass(
             serverSetting,
             updateTaskbarCallback,
             iconProvider,
+            parent,
             ...otherProps
         ) {
             super._init(otherProps);
             this.serverSetting = serverSetting;
             this.updateTaskbarCallback = updateTaskbarCallback;
             this.iconProvider = iconProvider;
-
-            //this.style_class = "bordered";
 
             this.session = new Soup.Session({
                 timeout: 10, //seconds
@@ -49,9 +48,10 @@ export const ServerStatusPanel = GObject.registerClass(
                 label: serverSetting.name,
                 y_align: Clutter.ActorAlign.CENTER,
             });
-            nameButton.connect("clicked", () =>
-                this.openBrowser(serverSetting.url),
-            );
+            nameButton.connect("clicked", () => {
+                parent.indicator.menu.close();
+                this.openBrowser(serverSetting.url);
+            });
             this.add_child(nameButton);
 
             // call once then schedule

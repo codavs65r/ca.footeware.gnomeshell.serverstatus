@@ -64,21 +64,13 @@ export default class ServerStatusIndicatorExtension extends Extension {
                 savedSetting,
                 this.updateIcon,
                 iconProvider,
+                this
             );
             this.serversBox.add_child(panel);
             statusPanels.push(panel);
         }
 
         // Open Prefs button
-        /*const prefsButton = new St.Button({
-            icon_name: "preferences-system-symbolic",
-            style_class: "icon-sm",
-        });
-        prefsButton.connect("clicked", () => {
-            this.indicator.menu.close();
-            this.openPreferences();
-        });*/
-
         this.indicator.menu.box.add_child(new PopupMenu.PopupSeparatorMenuItem());
         const prefsButton = new PopupMenu.PopupImageMenuItem(_('Preferences'), 'preferences-system-symbolic');
         prefsButton.connect("activate", () => {
