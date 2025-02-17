@@ -48,11 +48,12 @@ export const ServerStatusPanel = GObject.registerClass(
                 label: serverSetting.name,
                 y_align: Clutter.ActorAlign.CENTER,
             });
-            nameButton.connect("clicked", () => {
+            this.add_child(nameButton);
+
+            this.connect("activate", () => {
                 parent.indicator.menu.close();
                 this.openBrowser(serverSetting.url);
             });
-            this.add_child(nameButton);
 
             // call once then schedule
             this.update(serverSetting.url, panelIconDisposed);
