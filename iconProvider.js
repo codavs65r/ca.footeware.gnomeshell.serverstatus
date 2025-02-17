@@ -12,24 +12,17 @@ export class IconProvider {
      *
      * @param {String} assetPath path to image resources
      */
-    constructor(assetPath) {
-        this.serverIcon = Gio.icon_new_for_string(assetPath + "/server.svg");
-        this.serverUpIcon = Gio.icon_new_for_string(
-            assetPath + "/server-up.svg",
-        );
-        this.serverDownIcon = Gio.icon_new_for_string(
-            assetPath + "/server-down.svg",
-        );
-        this.serverBadIcon = Gio.icon_new_for_string(
-            assetPath + "/server-bad.svg",
-        );
+    constructor() {
+        this.serverIcon = "face-smile-symbolic";
+        this.serverUpIcon = "face-cool-symbolic";
+        this.serverDownIcon = "face-shutmouth-symbolic";
+        this.serverBadIcon = "face-sick-symbolic";
     }
 
     /**
      * Get a gicon for the provided {Status}.
      *
      * @param {Status} status
-     * @returns {Gio.icon}
      */
     getIcon(status) {
         let icon;
@@ -48,6 +41,29 @@ export class IconProvider {
         }
         return icon;
     }
+
+    /**
+     * Get a gicon for the provided {Status}.
+     *
+     * @param {Status} status
+     */
+    getClass(status) {
+        let styleClass;
+        switch (status) {
+            case Status.Up:
+                styleClass = 'icon-up';
+                break;
+            case Status.Down:
+                styleClass = 'icon-down';
+                break;
+            case Status.Bad:
+                styleClass = 'icon-bad';
+                break;
+            default:
+                styleClass = 'icon-init';
+        }
+        return styleClass;
+    }    
 
     /**
      * Get a {Status} for the provided gicon.

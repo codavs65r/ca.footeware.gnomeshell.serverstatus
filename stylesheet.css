@@ -1,22 +1,41 @@
 @charset "UTF-8";
 
 .bordered {
-    border-width: 1px;
+    border-width: 0px;
     border-radius: 10px;
-    border-color: #808080;
+    border-color: #484848;
     margin: 5px;
 }
 
 .icon-lg {
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
 }
 
 .icon-sm {
-    width: 15px;
-    height: 15px;
+    width: 16px;
+    height: 16px;
 }
 
-.padded {
-    padding: 5px;
+.indicator-icon {
+    margin-left: 2px;
+    margin-right: 2px;
+    padding-right: 2px;
+    padding-left: 2px;
+}
+
+.icon-init {
+    color: yellow;
+}
+
+.icon-up {
+    color: lightgreen;
+}
+
+.icon-down {
+    color: red;
+}
+
+.icon-bad {
+    color: orange;
 }

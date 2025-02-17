@@ -7,6 +7,7 @@ import {
     gettext as _,
 } from "resource:///org/gnome/shell/extensions/extension.js";
 import * as PanelMenu from "resource:///org/gnome/shell/ui/panelMenu.js";
+import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 import * as Main from "resource:///org/gnome/shell/ui/main.js";
 import { ServerSetting } from "./serverSetting.js";
 import { ServerStatusPanel } from "./serverStatusPanel.js";
@@ -26,8 +27,8 @@ const Indicator = GObject.registerClass(
         _init() {
             super._init(0.0, _("Server Status Indicator"));
             panelIcon = new St.Icon({
-                gicon: iconProvider.getIcon(Status.Init),
-                style_class: "system-status-icon",
+                icon_name: iconProvider.getIcon(Status.Init),
+                style_class: "system-status-icon indicator-icon",
             });
             this.add_child(panelIcon);
             statusPanels = [];
@@ -41,7 +42,7 @@ const Indicator = GObject.registerClass(
  */
 export default class ServerStatusIndicatorExtension extends Extension {
     enable() {
-        iconProvider = new IconProvider(this.path + "/assets/");
+        iconProvider = new IconProvider();
 
         // get settings stored in gsettings
         this.rawSettings = this.getSettings();
@@ -69,11 +70,18 @@ export default class ServerStatusIndicatorExtension extends Extension {
         }
 
         // Open Prefs button
-        const prefsButton = new St.Button({
+        /*const prefsButton = new St.Button({
             icon_name: "preferences-system-symbolic",
-            style_class: "icon-sm padded",
+            style_class: "icon-sm",
         });
         prefsButton.connect("clicked", () => {
+            this.indicator.menu.close();
+            this.openPreferences();
+        });*/
+
+        this.indicator.menu.box.add_child(new PopupMenu.PopupSeparatorMenuItem());
+        const prefsButton = new PopupMenu.PopupImageMenuItem(_('Preferences'), 'preferences-system-symbolic');
+        prefsButton.connect("activate", () => {
             this.indicator.menu.close();
             this.openPreferences();
         });
@@ -134,7 +142,7 @@ export default class ServerStatusIndicatorExtension extends Extension {
      * Preferences have changed the set of server settings so we can update the indicator icon.
      */
     onPrefChanged() {
-        panelIcon.gicon = iconProvider.getIcon(Status.Init);
+        panelIcon.icon_name = iconProvider.getIcon(Status.Init);
         statusPanels = [];
         // clear server box and repopulate
         this.serversBox.destroy_all_children();
@@ -164,8 +172,7 @@ export default class ServerStatusIndicatorExtension extends Extension {
         // determine worst status
         let haveDown = false;
         let haveBad = false;
-        let haveUp = false;
-        for (const s of statusList) {
+        let haveUp = false;        for (const s of statusList) {
             if (s === Status.Down) {
                 haveDown = true;
             } else if (s === Status.Bad) {
@@ -177,13 +184,17 @@ export default class ServerStatusIndicatorExtension extends Extension {
         // set taskbar indicator icon with appropriate color
         if (panelIcon) {
             if (haveDown) {
-                panelIcon.gicon = iconProvider.getIcon(Status.Down);
+                panelIcon.icon_name = iconProvider.getIcon(Status.Down);
+                panelIcon.style_class = "system-status-icon indicator-icon "+iconProvider.getClass(Status.Down);
             } else if (haveBad) {
-                panelIcon.gicon = iconProvider.getIcon(Status.Bad);
+                panelIcon.icon_name = iconProvider.getIcon(Status.Bad);
+                panelIcon.style_class = "system-status-icon indicator-icon "+iconProvider.getClass(Status.Bad);
             } else if (haveUp) {
-                panelIcon.gicon = iconProvider.getIcon(Status.Up);
+                panelIcon.icon_name = iconProvider.getIcon(Status.Up);
+                panelIcon.style_class = "system-status-icon indicator-icon "+iconProvider.getClass(Status.Up);
             } else {
-                panelIcon.gicon = iconProvider.getIcon(Status.Init);
+                panelIcon.icon_name = iconProvider.getIcon(Status.Init);
+                panelIcon.style_class = "system-status-icon indicator-icon "+iconProvider.getClass(Status.Init);
             }
         }
     }

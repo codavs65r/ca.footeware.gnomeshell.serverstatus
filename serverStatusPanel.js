@@ -6,6 +6,7 @@ import St from "gi://St";
 import Gio from "gi://Gio";
 import GObject from "gi://GObject";
 import Soup from "gi://Soup";
+import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 import { Status } from "./status.js";
 
 /**
@@ -16,7 +17,7 @@ export const ServerStatusPanel = GObject.registerClass(
     {
         GTypeName: "ServerStatusPanel",
     },
-    class ServerStatusPanel extends St.BoxLayout {
+    class ServerStatusPanel extends PopupMenu.PopupBaseMenuItem {
         _init(
             serverSetting,
             updateTaskbarCallback,
@@ -28,7 +29,7 @@ export const ServerStatusPanel = GObject.registerClass(
             this.updateTaskbarCallback = updateTaskbarCallback;
             this.iconProvider = iconProvider;
 
-            this.style_class = "bordered";
+            //this.style_class = "bordered";
 
             this.session = new Soup.Session({
                 timeout: 10, //seconds
@@ -36,8 +37,8 @@ export const ServerStatusPanel = GObject.registerClass(
 
             // icon displaying status by emoji icon
             this.panelIcon = new St.Icon({
-                gicon: this.iconProvider.getIcon(Status.Init),
-                style_class: "icon-lg padded",
+                icon_name: this.iconProvider.getIcon(Status.Init),
+                style_class: "icon-lg "+this.iconProvider.getClass(Status.Init),
             });
             let panelIconDisposed = false;
             this.panelIcon.connect("destroy", () => (panelIconDisposed = true));
@@ -46,7 +47,6 @@ export const ServerStatusPanel = GObject.registerClass(
             // server name display, click to open browser
             const nameButton = new St.Button({
                 label: serverSetting.name,
-                style_class: "padded",
                 y_align: Clutter.ActorAlign.CENTER,
             });
             nameButton.connect("clicked", () =>
@@ -76,7 +76,7 @@ export const ServerStatusPanel = GObject.registerClass(
          * @return {Status}
          */
         getStatus() {
-            return this.iconProvider.getStatus(this.panelIcon?.gicon);
+            return this.iconProvider.getStatus(this.panelIcon?.icon_name);
         }
 
         /**
@@ -114,6 +114,9 @@ export const ServerStatusPanel = GObject.registerClass(
                             let newIcon = this.iconProvider.getIcon(
                                 Status.Down,
                             );
+                            let newClass = this.iconProvider.getClass(
+                                Status.Down,
+                            );
 
                             try {
                                 // 429 Too Many Requests causes a 'bad Soup enum' error 🤨
@@ -124,12 +127,16 @@ export const ServerStatusPanel = GObject.registerClass(
                                     newIcon = this.iconProvider.getIcon(
                                         Status.Up,
                                     );
+                                    newClass = this.iconProvider.getClass(
+                                        Status.Up,
+                                    );                                    
                                 }
                             } catch (error) {
                                 // ignore and use initial value for newIcon i.e. Down
                             }
 
-                            panelIcon.gicon = newIcon;
+                            panelIcon.icon_name = newIcon;
+                            panelIcon.style_class = "icon-lg "+newClass;
                             this.updateTaskbarCallback?.();
                         }
                         return GLib.SOURCE_REMOVE;
@@ -137,7 +144,8 @@ export const ServerStatusPanel = GObject.registerClass(
                 );
             } else {
                 // message was null because of malformed url
-                panelIcon.gicon = this.iconProvider.getIcon(Status.Bad);
+                panelIcon.icon_name = this.iconProvider.getIcon(Status.Bad);
+                panelIcon.style_class = "icon-lg "+this.iconProvider.getClass(Status.Bad);
                 this.updateTaskbarCallback?.();
             }
         }
