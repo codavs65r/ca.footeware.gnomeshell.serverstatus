@@ -56,16 +56,16 @@ export class IconProvider {
         let styleClass;
         switch (status) {
             case Status.Up:
-                styleClass = this.serverClass;
+                styleClass = this.serverUpClass;
                 break;
             case Status.Down:
-                styleClass = this.serverUpClass;
+                styleClass = this.serverDownClass;
                 break;
             case Status.Bad:
                 styleClass = this.serverBadClass;
                 break;
             default:
-                styleClass = this.serverDownClass;
+                styleClass = this.serverInitClass;
         }
         return styleClass;
     }    
