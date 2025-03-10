@@ -17,6 +17,11 @@ export class IconProvider {
         this.serverUpIcon = "face-cool-symbolic";
         this.serverDownIcon = "face-shutmouth-symbolic";
         this.serverBadIcon = "face-sick-symbolic";
+
+        this.serverClass = "icon-init";
+        this.serverUpClass = "icon-up";
+        this.serverDownClass = "icon-down";
+        this.serverBadClass = "icon-bad";
     }
 
     /**
@@ -51,16 +56,16 @@ export class IconProvider {
         let styleClass;
         switch (status) {
             case Status.Up:
-                styleClass = 'icon-up';
+                styleClass = this.serverClass;
                 break;
             case Status.Down:
-                styleClass = 'icon-down';
+                styleClass = this.serverUpClass;
                 break;
             case Status.Bad:
-                styleClass = 'icon-bad';
+                styleClass = this.serverBadClass;
                 break;
             default:
-                styleClass = 'icon-init';
+                styleClass = this.serverDownClass;
         }
         return styleClass;
     }    
