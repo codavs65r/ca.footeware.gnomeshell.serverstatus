@@ -37,7 +37,7 @@ export const ServerStatusPanel = GObject.registerClass(
             // icon displaying status by emoji icon
             this.panelIcon = new St.Icon({
                 icon_name: this.iconProvider.getIcon(Status.Init),
-                style_class: "icon-lg "+this.iconProvider.getClass(Status.Init),
+                style_class: "icon-lg",// "+this.iconProvider.getClass(Status.Init),
             });
             let panelIconDisposed = false;
             this.panelIcon.connect("destroy", () => (panelIconDisposed = true));
@@ -145,7 +145,7 @@ export const ServerStatusPanel = GObject.registerClass(
                             }
 
                             panelIcon.icon_name = newIcon;
-                            panelIcon.style_class = "icon-lg "+newClass;
+                            panelIcon.style_class = "icon-lg";// "+newClass;
                             this.updateTaskbarCallback?.();
                         }
                         return GLib.SOURCE_REMOVE;
@@ -154,7 +154,7 @@ export const ServerStatusPanel = GObject.registerClass(
             } else {
                 // message was null because of malformed url
                 panelIcon.icon_name = this.iconProvider.getIcon(Status.Bad);
-                panelIcon.style_class = "icon-lg "+this.iconProvider.getClass(Status.Bad);
+                panelIcon.style_class = "icon-lg";// "+this.iconProvider.getClass(Status.Bad);
                 this.updateTaskbarCallback?.();
             }
         }
